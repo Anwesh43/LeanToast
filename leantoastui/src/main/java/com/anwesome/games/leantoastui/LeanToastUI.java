@@ -8,6 +8,9 @@ import android.graphics.*;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by anweshmishra on 22/03/17.
  */
@@ -16,8 +19,10 @@ public class LeanToastUI{
     private String text;
     private long timeDuration;
     private Activity activity;
+    private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private boolean done = false;
     private LeanToastUIView leanToastUIView;
+    private List<TextMessage> messages = new ArrayList<>();
     public void setText(String text) {
         this.text = text;
     }
@@ -37,11 +42,31 @@ public class LeanToastUI{
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    paint.setTextSize(h/40);
                     leanToastUIView = new LeanToastUIView(activity);
-                    activity.addContentView(leanToastUIView,new ViewGroup.LayoutParams(w,h/10));
+                    float x = paint.getTextSize()/2,y = paint.getTextSize();
+                    String tokens[] = text.split(" ");
+                    String msg="";
+                    for(String token:tokens) {
+                        if(paint.measureText(msg+token)>w-h/40) {
+                            if(messages.size()==0) {
+                                y+=paint.getTextSize()/2;
+                            }
+                            messages.add(TextMessage.newInstance(msg,y));
+                            msg = token;
+                            y+=(paint.getTextSize()*2);
+                        }
+                        else {
+                            msg = msg+token;
+                        }
+                    }
+                    messages.add(TextMessage.newInstance(msg,y+paint.getTextSize()));
+                    y+=3*paint.getTextSize();
+                    activity.addContentView(leanToastUIView,new ViewGroup.LayoutParams(w,(int)y));
                     leanToastUIView.setX(0);
                     leanToastUIView.setY(h);
-                    initAnimations(h,h-(3*h)/10);
+                    y = Math.max(h/5,y);
+                    initAnimations(h,h-(h)/10-y);
                 }
             });
 
@@ -79,7 +104,6 @@ public class LeanToastUI{
         return done;
     }
     private class LeanToastUIView extends View {
-        private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         public LeanToastUIView(Context context) {
             super(context);
         }
@@ -93,6 +117,9 @@ public class LeanToastUI{
             path.lineTo(w/5+triH,triH);
             path.lineTo(w/5+triH/2,0);
             canvas.drawPath(path,paint);
+            for(TextMessage textMessage:messages) {
+                textMessage.drawMessage(canvas,paint);
+            }
         }
     }
     public int hashCode() {
