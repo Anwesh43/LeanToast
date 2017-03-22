@@ -1,5 +1,6 @@
 package com.anwesome.ui.leantoast;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,11 +16,12 @@ public class LeanToast extends AppCompatActivity {
         Button showToast = (Button)findViewById(R.id.showtoast);
         Button showShorterToast = (Button)findViewById(R.id.show_short_toast);
         final TextView numberOfToasts = (TextView)findViewById(R.id.number_of_texts);
+        com.anwesome.games.leantoastui.LeanToast.setColor(Color.parseColor("#e53935"));
         showToast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 time++;
-                com.anwesome.games.leantoastui.LeanToast.show(LeanToast.this,"More More More More More More More Showing LeanToast"+(time), com.anwesome.games.leantoastui.LeanToast.LENGTH_LONG);
+                com.anwesome.games.leantoastui.LeanToast.show(LeanToast.this,"Showing LeanToast"+(time), com.anwesome.games.leantoastui.LeanToast.LENGTH_LONG);
                 numberOfToasts.setText("number of toasts "+time);
             }
         });
