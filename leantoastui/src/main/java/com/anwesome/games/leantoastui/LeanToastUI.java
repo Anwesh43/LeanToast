@@ -49,7 +49,7 @@ public class LeanToastUI{
                     String tokens[] = text.split(" ");
                     String msg="";
                     for(String token:tokens) {
-                        if(paint.measureText(msg+" "+token)>4*w/5) {
+                        if(paint.measureText(msg+" "+token)>7*w/10) {
                             messages.add(TextMessage.newInstance(msg,y));
 
                             msg = token;
