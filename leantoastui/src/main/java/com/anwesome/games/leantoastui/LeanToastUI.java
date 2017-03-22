@@ -45,14 +45,11 @@ public class LeanToastUI{
                 public void run() {
                     paint.setTextSize(h/40);
                     leanToastUIView = new LeanToastUIView(activity);
-                    float y = paint.getTextSize();
+                    float y = 3*paint.getTextSize();
                     String tokens[] = text.split(" ");
                     String msg="";
                     for(String token:tokens) {
                         if(paint.measureText(msg+token)>4*w/5) {
-                            if(messages.size()==0) {
-                                y+=(paint.getTextSize()*2);
-                            }
                             messages.add(TextMessage.newInstance(msg,y));
                             msg = token;
                             y+=((paint.getTextSize()*5)/4);
@@ -111,7 +108,8 @@ public class LeanToastUI{
         public void onDraw(Canvas canvas) {
             canvas.drawColor(Color.parseColor("#00000000"));
             paint.setColor(color);
-            int w = canvas.getWidth(),h = canvas.getHeight(),triH = h/5;
+            int w = canvas.getWidth(),h = canvas.getHeight();
+            float triH = 2*paint.getTextSize();
             canvas.drawRoundRect(new RectF(w/10,triH,w-w/10,h-triH),w/10,w/10,paint);
             Path path = new Path();
             path.moveTo(w/5,triH);

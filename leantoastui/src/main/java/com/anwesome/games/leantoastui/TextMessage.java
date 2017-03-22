@@ -3,7 +3,6 @@ package com.anwesome.games.leantoastui;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.widget.TextView;
 
 /**
  * Created by anweshmishra on 22/03/17.
