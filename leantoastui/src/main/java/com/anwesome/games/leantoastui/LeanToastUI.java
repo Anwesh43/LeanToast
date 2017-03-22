@@ -15,7 +15,7 @@ import java.util.List;
  * Created by anweshmishra on 22/03/17.
  */
 public class LeanToastUI{
-    private int color = Color.parseColor("#1976D2");
+    private int color;
     private String text;
     private long timeDuration;
     private Activity activity;
@@ -114,7 +114,7 @@ public class LeanToastUI{
             Path path = new Path();
             path.moveTo(w/5,triH);
             path.lineTo(w/5+triH,triH);
-            path.lineTo(w/5+triH/2,0);
+            path.lineTo(w/5+triH/2,triH/2);
             canvas.drawPath(path,paint);
             for(TextMessage textMessage:messages) {
                 textMessage.drawMessage(canvas,paint);
