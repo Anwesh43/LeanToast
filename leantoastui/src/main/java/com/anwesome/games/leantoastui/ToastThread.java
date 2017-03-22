@@ -1,5 +1,7 @@
 package com.anwesome.games.leantoastui;
 
+import android.util.Log;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -8,29 +10,34 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ToastThread {
     private ConcurrentLinkedQueue<LeanToastUI> leanToastUIs = new ConcurrentLinkedQueue<>();
     public boolean running = false;
-    private int called = 0;
     private Thread toastThread;
+    private ToastThreadRunner toastThreadRunner = new ToastThreadRunner();
+    private boolean started = false;
     public void addLeanToastUi(LeanToastUI leanToastUI) {
         leanToastUIs.add(leanToastUI);
-        if(called == 0) {
-            toastThread = new Thread(new ToastThreadRunner());
-        }
         if(!running) {
+            if(started) {
+                stopThread();
+            }
+            toastThread = new Thread(toastThreadRunner);
             running = true;
+            started = true;
             toastThread.start();
         }
-        called++;
     }
     public void stopThread() {
+        Log.d("status","stopping thread");
         while(true) {
             try {
                 toastThread.join();
                 break;
             }
             catch (Exception ex) {
-
+                Log.e("exception",ex.toString());
             }
         }
+        started = false;
+        Log.d("status","thread is stopped");
     }
     public LeanToastUI getFirtLeanToast() {
         for(LeanToastUI leanToastUI:leanToastUIs) {
@@ -52,9 +59,6 @@ public class ToastThread {
                 if(leanToastUI.isDone()) {
                     leanToastUIs.remove(leanToastUI);
                 }
-            }
-            if(!running) {
-                stopThread();
             }
         }
     }
