@@ -57,7 +57,7 @@ public class LeanToastUI{
                         }
                         else {
                             if(!msg.equals("")) {
-                                msg+="";
+                                msg+=" ";
                             }
                             msg += token;
 
