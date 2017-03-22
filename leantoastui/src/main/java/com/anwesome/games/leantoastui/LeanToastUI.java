@@ -21,6 +21,7 @@ public class LeanToastUI{
     private Activity activity;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private boolean done = false;
+    private boolean loaded = false;
     private LeanToastUIView leanToastUIView;
     private List<TextMessage> messages = new ArrayList<>();
     public void setText(String text) {
@@ -35,8 +36,8 @@ public class LeanToastUI{
         this.activity = activity;
     }
     public void show() {
-        if(leanToastUIView == null) {
-
+        if(leanToastUIView == null && !loaded) {
+            loaded = true;
             Point dimension = DimensionsUtil.getDeviceDimension(activity);
             final int w = dimension.x,h = dimension.y;
             activity.runOnUiThread(new Runnable() {
@@ -44,29 +45,29 @@ public class LeanToastUI{
                 public void run() {
                     paint.setTextSize(h/40);
                     leanToastUIView = new LeanToastUIView(activity);
-                    float x = paint.getTextSize()/2,y = paint.getTextSize();
+                    float y = paint.getTextSize();
                     String tokens[] = text.split(" ");
                     String msg="";
                     for(String token:tokens) {
-                        if(paint.measureText(msg+token)>w-h/40) {
+                        if(paint.measureText(msg+token)>4*w/5) {
                             if(messages.size()==0) {
-                                y+=paint.getTextSize()/2;
+                                y+=(paint.getTextSize()*2);
                             }
                             messages.add(TextMessage.newInstance(msg,y));
                             msg = token;
-                            y+=(paint.getTextSize()*2);
+                            y+=((paint.getTextSize()*5)/4);
                         }
                         else {
                             msg = msg+token;
                         }
                     }
-                    messages.add(TextMessage.newInstance(msg,y+paint.getTextSize()));
-                    y+=3*paint.getTextSize();
+                    messages.add(TextMessage.newInstance(msg,y));
+                    y+=(5*paint.getTextSize())/2;
                     activity.addContentView(leanToastUIView,new ViewGroup.LayoutParams(w,(int)y));
                     leanToastUIView.setX(0);
                     leanToastUIView.setY(h);
                     y = Math.max(h/5,y);
-                    initAnimations(h,h-(h)/10-y);
+                    initAnimations(h,(4*h)/5-y);
                 }
             });
 
