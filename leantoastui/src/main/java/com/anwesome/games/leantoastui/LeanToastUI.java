@@ -1,5 +1,7 @@
 package com.anwesome.games.leantoastui;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.*;
@@ -12,8 +14,9 @@ import android.view.ViewGroup;
 public class LeanToastUI{
     private int color = Color.parseColor("#1976D2");
     private String text;
-    private int timeDuration;
+    private long timeDuration;
     private Activity activity;
+    private boolean done = false;
     private LeanToastUIView leanToastUIView;
     public void setText(String text) {
         this.text = text;
@@ -21,7 +24,7 @@ public class LeanToastUI{
     public void setColor(int color) {
         this.color = color;
     }
-    public LeanToastUI(Activity activity,String text, int timeDuration) {
+    public LeanToastUI(Activity activity,String text, long timeDuration) {
         this.text = text;
         this.timeDuration = timeDuration;
         this.activity = activity;
@@ -33,8 +36,36 @@ public class LeanToastUI{
             int w = dimension.x,h = dimension.y;
             activity.addContentView(leanToastUIView,new ViewGroup.LayoutParams(w,h/10));
             leanToastUIView.setX(0);
-            leanToastUIView.setY((9*h)/10-h/20);
+            leanToastUIView.setY(h);
+            initAnimations(h,h-(3*h)/20);
         }
+    }
+    public void initAnimations(float startY,float endY) {
+        ValueAnimator startAnim = ValueAnimator.ofFloat(startY,endY);
+        final ValueAnimator endAnim = ValueAnimator.ofFloat(endY,startY);
+        final AnimationAdapter startAnimAdapter = new AnimationAdapter() {
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                leanToastUIView.setY((float)valueAnimator.getAnimatedValue());
+            }
+            public void onAnimationEnd(Animator animator) {
+                endAnim.start();
+            }
+        };
+        final AnimationAdapter endAnimAdapter = new AnimationAdapter() {
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                leanToastUIView.setY((float)valueAnimator.getAnimatedValue());
+            }
+            public void onAnimationEnd(Animator animator) {
+                done = true;
+            }
+        };
+        startAnim.setDuration(500);
+        endAnim.setDuration(500);
+        endAnim.setStartDelay(timeDuration);
+        startAnim.start();
+    }
+    public boolean isDone() {
+        return done;
     }
     private class LeanToastUIView extends View {
         private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
