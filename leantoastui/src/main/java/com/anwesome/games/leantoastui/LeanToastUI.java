@@ -31,13 +31,20 @@ public class LeanToastUI{
     }
     public void show() {
         if(leanToastUIView == null) {
-            leanToastUIView = new LeanToastUIView(activity);
+
             Point dimension = DimensionsUtil.getDeviceDimension(activity);
-            int w = dimension.x,h = dimension.y;
-            activity.addContentView(leanToastUIView,new ViewGroup.LayoutParams(w,h/10));
-            leanToastUIView.setX(0);
-            leanToastUIView.setY(h);
-            initAnimations(h,h-(3*h)/20);
+            final int w = dimension.x,h = dimension.y;
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    leanToastUIView = new LeanToastUIView(activity);
+                    activity.addContentView(leanToastUIView,new ViewGroup.LayoutParams(w,h/10));
+                    leanToastUIView.setX(0);
+                    leanToastUIView.setY(h);
+                    initAnimations(h,h-(3*h)/20);
+                }
+            });
+
         }
     }
     public void initAnimations(float startY,float endY) {
@@ -61,6 +68,10 @@ public class LeanToastUI{
         };
         startAnim.setDuration(500);
         endAnim.setDuration(500);
+        startAnim.addUpdateListener(startAnimAdapter);
+        startAnim.addListener(startAnimAdapter);
+        endAnim.addUpdateListener(endAnimAdapter);
+        endAnim.addListener(endAnimAdapter);
         endAnim.setStartDelay(timeDuration);
         startAnim.start();
     }
