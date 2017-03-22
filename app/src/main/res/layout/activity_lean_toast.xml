@@ -13,11 +13,17 @@
         android:id="@+id/showtoast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show Toast"/>
+        android:text="Show Lengthy Toast"/>
+    <Button
+        android:id="@+id/show_short_toast"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@+id/showtoast"
+        android:layout_height="wrap_content"
+        android:text="Show Shorter Toast"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/number_of_texts"
         android:layout_below="@+id/showtoast"
-        android:text="number of toasts is"/>
+        android:text="number of toasts is 0"/>
 </RelativeLayout>

@@ -13,12 +13,21 @@ public class LeanToast extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lean_toast);
         Button showToast = (Button)findViewById(R.id.showtoast);
+        Button showShorterToast = (Button)findViewById(R.id.show_short_toast);
         final TextView numberOfToasts = (TextView)findViewById(R.id.number_of_texts);
         showToast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 time++;
-                com.anwesome.games.leantoastui.LeanToast.show(LeanToast.this,"Showing LeanToast"+(time), com.anwesome.games.leantoastui.LeanToast.LENGTH_LONG);
+                com.anwesome.games.leantoastui.LeanToast.show(LeanToast.this,"More More More More More More More Showing LeanToast"+(time), com.anwesome.games.leantoastui.LeanToast.LENGTH_LONG);
+                numberOfToasts.setText("number of toasts "+time);
+            }
+        });
+        showShorterToast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                time++;
+                com.anwesome.games.leantoastui.LeanToast.show(LeanToast.this,"More More More More More More More Showing LeanToast"+(time), com.anwesome.games.leantoastui.LeanToast.LENGTH_SHORT);
                 numberOfToasts.setText("number of toasts "+time);
             }
         });
