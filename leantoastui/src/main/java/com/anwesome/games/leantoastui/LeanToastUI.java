@@ -84,4 +84,7 @@ public class LeanToastUI{
             canvas.drawPath(path,paint);
         }
     }
+    public int hashCode() {
+        return text.hashCode()+(int)timeDuration+leanToastUIView.hashCode();
+    }
 }
