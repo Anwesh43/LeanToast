@@ -41,7 +41,7 @@ public class LeanToastUI{
                     activity.addContentView(leanToastUIView,new ViewGroup.LayoutParams(w,h/10));
                     leanToastUIView.setX(0);
                     leanToastUIView.setY(h);
-                    initAnimations(h,h-(3*h)/20);
+                    initAnimations(h,h-(3*h)/10);
                 }
             });
 
@@ -87,11 +87,11 @@ public class LeanToastUI{
             canvas.drawColor(Color.parseColor("#00000000"));
             paint.setColor(color);
             int w = canvas.getWidth(),h = canvas.getHeight(),triH = h/5;
-            canvas.drawRoundRect(new RectF(w/10,h/5,w-w/10,h-h/5),w/10,w/10,paint);
+            canvas.drawRoundRect(new RectF(w/10,triH,w-w/10,h-triH),w/10,w/10,paint);
             Path path = new Path();
-            path.lineTo(w/5,h/5);
-            path.lineTo(w/5+h/5,h/5);
-            path.lineTo(w/5+h/10,0);
+            path.moveTo(w/5,triH);
+            path.lineTo(w/5+triH,triH);
+            path.lineTo(w/5+triH/2,0);
             canvas.drawPath(path,paint);
         }
     }
